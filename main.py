@@ -1,7 +1,5 @@
-from optparse import HelpFormatter
+from forex_python.converter import CurrencyRates
 
+c = CurrencyRates()
 
-print("hello")
-print("This is a test")
-print("Test 2")
-hello
+print(c.get_rate('USD', 'GBP'))
