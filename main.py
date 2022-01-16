@@ -1,5 +1,4 @@
-from forex_python.converter import CurrencyRates
+import cryptocompare
 
-c = CurrencyRates()
-
-print(c.get_rate('USD', 'GBP'))
+if __name__ == "__main__":
+    print(cryptocompare.get_price('BTC'))
