@@ -1,42 +1,70 @@
 from tkinter import *
+
 import sys
 import os 
 
-root = Tk()
-root.geometry("1200x600")
-root.title("S&P50")
-root.configure(bg = "#2D2D32")
+from matplotlib.backends.backend_tkagg import (
+    FigureCanvasTkAgg, NavigationToolbar2Tk)
+from matplotlib.figure import Figure
 
-title = Label(root, text = "S&P 10", fg = "#D5D5D6", bg = '#2D2D32', font = ("Times New Roman",70, "bold"))
-title.pack()
+def main():
+    root = Tk()
+    gui = startPage(root)
+    gui.root.mainloop()
+    return None
+
+class startPage:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("S&P50")
+        self.root.geometry("1200x700")
+        self.root.configure(bg = "#2D2D32")
+
+        #Title
+        self.title = Label(self.root, text = "S&P 10", fg = "#D5D5D6", bg = '#2D2D32', font = ("Times New Roman",70, "bold"))
+        self.title.pack()
+
+        #Search Box
+        self.search_box = Entry(self.root, width = 50, borderwidth = 1, bg = '#2D2D32')
+        self.search_box.pack(pady = 10)
+        self.search_box.insert(0, "Enter Crypto")
+
+        #showButton
+        self.showButton = Button(self.root, text = "Show Cryptos", bg = "#7C7C7C",width = 20, height = 5, font = ("Times New Roman",20, "bold"), command = self.show_list_box)
+        self.showButton.pack(side = LEFT, padx = 50)
+
+        #randomButton
+        self.randomButton = Button(self.root, text = "Random Crypto", bg = "#7C7C7C",width = 20, height = 5, font = ("Times New Roman",20, "bold"), command = self.randomCrypto)
+        self.randomButton.pack(side =  RIGHT, padx = 50)
+
+        #Top10 Cryptos
+        global cryptos
+        cryptos = ["BTC", "ETH", "DOGE", "SHIB", "BCH", "ETC", "BNB", "USDT", "SOL", "ADA"]
+
+        #Cryptos Listbox
+        self.list_box = Listbox(self.root, bg = "#BDBDBD", height = 10, width = 40, font = ("Times New Roman",15, "bold"))
+        self.list_box.pack(pady = 50)
+        # self.list_box.bind("<<ListboxSelect>>", update_search_box)
+    
+
+        
+    def randomCrypto(self, event = None):
+        os.system("python main.py")
 
 
-def getCrypto():
-    info = Label(root, text = crypto.get())
-    info.pack()
+    def show_list_box(self, event = None):
+        self.list_box.delete(0, END)
+        
+        for crypto in cryptos:
+            self.list_box.insert(END, crypto)
+            
 
-crypto = Entry(root, width = 50, borderwidth = 1, bg = '#2D2D32')
-crypto.pack()
-crypto.insert(0, "Enter Crypto")
-
-
-
-getInfo_Button = Button(root, text = "Get Info", padx = 100, pady = 70, font = ("Times New Roman",20, "bold"), command = getCrypto)
-getInfo_Button.pack()
-getInfo_Button.place(x = 200, y = 180)
+    #Update search box with listbox clicked
+    def update_search_box(self, e):
+        self.search_box.delete(0, END)
+        self.search_box.insert(0, self.list_box.get(ACTIVE))
 
 
 
 
-def randomCrypto():
-    os.system("python main.py")
-
-randomButton = Button(root, text = "Random Crypto", bg = "#7C7C7C", padx = 70, pady = 70, font = ("Times New Roman",20, "bold"), command = randomCrypto)
-randomButton.pack()
-randomButton.place(x = 700, y = 180)
-
-
-
-
-
-root.mainloop()
+main()
